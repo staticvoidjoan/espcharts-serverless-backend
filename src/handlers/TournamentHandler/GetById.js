@@ -5,6 +5,12 @@ module.exports.handler = async (event, context) => {
   try {
     await connectDatabase();
     const tournamentObj = await Tournament.findById(event.pathParameters.id);
+    if (!tournamentObj) {
+      return{
+        statusCode: 404,
+        body: JSON.stringify({message: "Could not find tournament or tournament does not exist"})
+      }
+    }
     return {
       headers: {
         "Content-Type": "application/json",

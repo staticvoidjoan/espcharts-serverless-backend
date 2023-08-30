@@ -5,6 +5,12 @@ module.exports.handler = async (event, context) => {
   try {
     await connectDatabase();
     const playerObj = await Player.findById(event.pathParameters.id);
+    if (!playerObj) {
+      return{
+        statusCode: 404,
+        body: JSON.stringify({message: "Could not find player or player does not exist"})
+      }
+    }
     return {
       headers: {
         "Content-Type": "application/json",

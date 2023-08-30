@@ -7,6 +7,12 @@ module.exports.handler = async (event, context) => {
   try {
     await connectDatabase();
     const teamObj = await Team.find();
+    if(teamObj.length == 0){
+      return{
+        statusCode: 404,
+        body: JSON.stringify({message: "No teams found"})
+      }
+    }
 
     return {
       headers: {

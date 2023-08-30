@@ -4,6 +4,16 @@ const Tournament = require('../../models/Tournament');
 module.exports.handler = async (event, context) => {
   try {
     await connectDatabase();
+    const tournamentId =  event.pathParameters.id;
+    const existingTournament = await Tournament.findById(tournamentId);
+    if (!existingTournament) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({
+          message: "Could not find tournament or tournament does not exist",
+        }),
+      };
+    }
     const tournamentObj = await Tournament.findByIdAndDelete(event.pathParameters.id);
     return {
       headers: {

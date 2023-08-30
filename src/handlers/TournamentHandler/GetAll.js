@@ -7,7 +7,12 @@ module.exports.handler = async (event, context) => {
   try {
     await connectDatabase();
     const tournamentObj = await Tournament.find();
-
+    if (tournamentObj.length == 0) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: "No tournaments found" }),
+      };
+    }
     return {
       headers: {
         "Content-Type": "application/json",

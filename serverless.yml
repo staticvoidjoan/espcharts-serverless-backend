@@ -6,6 +6,8 @@ package:
 
 plugins:
   - serverless-dotenv-plugin
+  - serverless-webpack
+
 
 
 provider:

@@ -29,7 +29,7 @@ module.exports.handler = async (event, context) => {
 
     },
       statusCode: 200,
-      body: JSON.stringify(players,null, 2),
+      body: JSON.stringify(players),
     };
   } catch (error) {
     console.error(error);
