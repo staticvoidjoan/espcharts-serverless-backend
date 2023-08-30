@@ -1,0 +1,151 @@
+service: espcharts-serverless-backend
+frameworkVersion: "3"
+
+package:
+  individually: true
+
+plugins:
+  - serverless-dotenv-plugin
+
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  profile: joanserv
+  region: eu-north-1
+  stage: ${opt:stage, 'dev'}
+
+functions:
+  #Player functions
+  createPlayer:
+    handler: src/handlers/PlayerHandlers/Post.handler
+    events:
+      - http:
+          path: /espcharts/players
+          method: post
+          cors: true
+
+  getAllPlayers:
+    handler: src/handlers/PlayerHandlers/GetAll.handler
+    events:
+      - http:
+          path: /espcharts/allPlayers
+          method: get
+          cors: true
+  getPlayerById:
+    handler: src/handlers/PlayerHandlers/GetById.handler
+    events:
+      - http:
+          path: /espcharts/players/{id}
+          method: get
+          cors: true
+  getPlayerPages:
+    handler: src/handlers/PlayerHandlers/GetPages.handler
+    events:
+      - http:
+          path: /espcharts/players
+          method: get
+          cors: true
+  updatePlayer:
+    handler: src/handlers/PlayerHandlers/Update.handler
+    events:
+      - http:
+          path: /espcharts/players/{id}
+          method: put
+          cors: true
+
+  deletePlayer:
+    handler: src/handlers/PlayerHandlers/Delete.handler
+    events:
+      - http:
+          path: /espcharts/players/{id}
+          method: delete
+          cors: true
+  #Team Functions
+  createTeam:
+    handler: src/handlers/TeamHandlers/Post.handler
+    events:
+      - http:
+          path: /espcharts/teams
+          method: post
+          cors: true
+  getAllTeams:
+    handler: src/handlers/TeamHandlers/GetAll.handler
+    events:
+      - http:
+          path: /espcharts/allTeams
+          method: get
+          cors: true
+  getTeamById:
+    handler: src/handlers/TeamHandlers/GetById.handler
+    events:
+      - http:
+          path: /espcharts/teams/{id}
+          method: get
+          cors: true
+  updateTeam:
+    handler: src/handlers/TeamHandlers/Update.handler
+    events:
+      - http:
+          path: /espcharts/teams/{id}
+          method: put
+          cors: true
+  getTeamPages:
+    handler: src/handlers/TeamHandlers/GetPages.handler
+    events:
+      - http:
+          path: /espcharts/teams
+          method: get
+          cors: true
+
+  deleteTeam:
+    handler: src/handlers/TeamHandlers/Delete.handler
+    events:
+      - http:
+          path: /espcharts/teams/{id}
+          method: delete
+          cors: true
+  #Tournament Functions
+  createTournament:
+    handler: src/handlers/TournamentHandler/Post.handler
+    events:
+      - http:
+          path: /espcharts/tournaments
+          method: post
+          cors: true
+  getAllTournaments:
+    handler: src/handlers/TournamentHandler/GetAll.handler
+    events:
+      - http:
+          path: /espcharts/allTournaments
+          method: get
+          cors: true
+  getTournamentById:
+    handler: src/handlers/TournamentHandler/GetById.handler
+    events:
+      - http:
+          path: /espcharts/tournaments/{id}
+          method: get
+          cors: true
+  updateTournament:
+    handler: src/handlers/TournamentHandler/Update.handler
+    events:
+      - http:
+          path: /espcharts/tournaments/{id}
+          method: put
+          cors: true
+  getTournamentPages:
+    handler: src/handlers/TournamentHandler/GetPages.handler
+    events:
+      - http:
+          path: /espcharts/tournaments
+          method: get
+          cors: true
+
+  deleteTournament:
+    handler: src/handlers/TournamentHandler/Delete.handler
+    events:
+      - http:
+          path: /espcharts/tournament/{id}
+          method: delete
+          cors: true
