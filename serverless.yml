@@ -14,6 +14,17 @@ provider:
   profile: joanserv
   region: eu-north-1
   stage: ${opt:stage, 'dev'}
+  environment:
+    user_pool_id: { Ref: UserPool }
+    client_id: { Ref: UserClient }
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - cognito-idp:AdminInitiateAuth
+        - cognito-idp:AdminCreateUser
+        - cognito-idp:AdminSetUserPassword
+      Resource: "*"
+
 
 functions:
   # Player functions
@@ -178,23 +189,70 @@ functions:
           path: /espcharts/confirm/{token}
           method: get
           cors: true
+  #Authentication Functions
+  loginUser:
+    handler: src/handlers/UserHandlers/Login.handler
+    events:
+      - http:
+          path: /espcharts/login
+          method: post
+          cors: true
+
+  signupUser:
+    handler: src/handlers/UserHandlers/SignUp.handler
+    events:
+      - http:
+          path: /espcharts/signup
+          method: post
+          cors: true
+
+  privateAPI:
+    handler: src/handlers/UserHandlers/Private.handler
+    events:
+      - http:
+          path: espcharts/private
+          method: post
+          cors: true
+          authorizer:
+            name: PrivateAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - UserPool
+                - Arn
+            claims:
+              - email
 
 resources:
   Resources:
-    CognitoUserPool:
+    UserPool:
       Type: AWS::Cognito::UserPool
       Properties:
-        UserPoolName: ${self:provider.stage}-user-esp-pool
-        UsernameAttributes:
-          - email
+        UserPoolName: ${self:service}-${self:provider.stage}-user-pool-SLS
+        Schema:
+          - Name: email
+            Required: true
+            Mutable: true
+            AttributeDataType: String
+          - Name: given_name
+            Mutable: true
+            AttributeDataType: String
+          - Name: family_name
+            Mutable: true
+            AttributeDataType: String
+        Policies:
+          PasswordPolicy:
+            MinimumLength: 6
         AutoVerifiedAttributes:
           - email
-    CognitoUserPoolClient:
+
+    UserClient:
       Type: AWS::Cognito::UserPoolClient
       Properties:
-        ClientName: ${self:provider.stage}-user-esp-pool-client
-        UserPoolId: 
-          Ref: CognitoUserPool
-        ExplicitAuthFlows:
-          - ADMIN_NO_SRP_AUTH
+        ClientName: user-pool-ui
         GenerateSecret: false
+        UserPoolId: !Ref UserPool
+        AccessTokenValidity: 5
+        IdTokenValidity: 5
+        ExplicitAuthFlows:
+          - "ADMIN_NO_SRP_AUTH"
