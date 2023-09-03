@@ -8,8 +8,6 @@ plugins:
   - serverless-dotenv-plugin
   - serverless-webpack
 
-
-
 provider:
   name: aws
   runtime: nodejs18.x
@@ -18,7 +16,7 @@ provider:
   stage: ${opt:stage, 'dev'}
 
 functions:
-  #Player functions
+  # Player functions
   createPlayer:
     handler: src/handlers/PlayerHandlers/Post.handler
     events:
@@ -34,6 +32,7 @@ functions:
           path: /espcharts/allPlayers
           method: get
           cors: true
+
   getPlayerById:
     handler: src/handlers/PlayerHandlers/GetById.handler
     events:
@@ -41,6 +40,7 @@ functions:
           path: /espcharts/players/{id}
           method: get
           cors: true
+
   getPlayerPages:
     handler: src/handlers/PlayerHandlers/GetPages.handler
     events:
@@ -48,6 +48,7 @@ functions:
           path: /espcharts/players
           method: get
           cors: true
+
   updatePlayer:
     handler: src/handlers/PlayerHandlers/Update.handler
     events:
@@ -63,7 +64,8 @@ functions:
           path: /espcharts/players/{id}
           method: delete
           cors: true
-  #Team Functions
+
+  # Team Functions
   createTeam:
     handler: src/handlers/TeamHandlers/Post.handler
     events:
@@ -71,6 +73,7 @@ functions:
           path: /espcharts/teams
           method: post
           cors: true
+
   getAllTeams:
     handler: src/handlers/TeamHandlers/GetAll.handler
     events:
@@ -78,6 +81,7 @@ functions:
           path: /espcharts/allTeams
           method: get
           cors: true
+
   getTeamById:
     handler: src/handlers/TeamHandlers/GetById.handler
     events:
@@ -85,6 +89,7 @@ functions:
           path: /espcharts/teams/{id}
           method: get
           cors: true
+
   updateTeam:
     handler: src/handlers/TeamHandlers/Update.handler
     events:
@@ -92,6 +97,7 @@ functions:
           path: /espcharts/teams/{id}
           method: put
           cors: true
+
   getTeamPages:
     handler: src/handlers/TeamHandlers/GetPages.handler
     events:
@@ -107,7 +113,8 @@ functions:
           path: /espcharts/teams/{id}
           method: delete
           cors: true
-  #Tournament Functions
+
+  # Tournament Functions
   createTournament:
     handler: src/handlers/TournamentHandler/Post.handler
     events:
@@ -115,6 +122,7 @@ functions:
           path: /espcharts/tournaments
           method: post
           cors: true
+
   getAllTournaments:
     handler: src/handlers/TournamentHandler/GetAll.handler
     events:
@@ -122,6 +130,7 @@ functions:
           path: /espcharts/allTournaments
           method: get
           cors: true
+
   getTournamentById:
     handler: src/handlers/TournamentHandler/GetById.handler
     events:
@@ -129,6 +138,7 @@ functions:
           path: /espcharts/tournaments/{id}
           method: get
           cors: true
+
   updateTournament:
     handler: src/handlers/TournamentHandler/Update.handler
     events:
@@ -136,6 +146,7 @@ functions:
           path: /espcharts/tournaments/{id}
           method: put
           cors: true
+
   getTournamentPages:
     handler: src/handlers/TournamentHandler/GetPages.handler
     events:
@@ -151,3 +162,39 @@ functions:
           path: /espcharts/tournament/{id}
           method: delete
           cors: true
+
+  sendConfirmEmail:
+    handler: src/handlers/MailHandlers/Mail.sendConfirmEmailfromServer
+    events:
+      - http:
+          path: /espcharts/subscribe
+          method: post
+          cors: true
+
+  confirmToken:
+    handler: src/handlers/MailHandlers/Mail.confirmToken
+    events:
+      - http:
+          path: /espcharts/confirm/{token}
+          method: get
+          cors: true
+
+resources:
+  Resources:
+    CognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        UserPoolName: ${self:provider.stage}-user-esp-pool
+        UsernameAttributes:
+          - email
+        AutoVerifiedAttributes:
+          - email
+    CognitoUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        ClientName: ${self:provider.stage}-user-esp-pool-client
+        UserPoolId: 
+          Ref: CognitoUserPool
+        ExplicitAuthFlows:
+          - ADMIN_NO_SRP_AUTH
+        GenerateSecret: false
