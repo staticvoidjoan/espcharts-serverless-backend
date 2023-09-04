@@ -10,7 +10,7 @@ module.exports.handler = async (event) => {
       return sendResponse(400, { message: "Invalid input" });
     }
 
-    const { email, password } = event.body;
+    const { email, password } = JSON.parse(event.body);
     const { user_pool_id, client_id } = process.env;
     const params = {
       AuthFlow: "ADMIN_NO_SRP_AUTH",

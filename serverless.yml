@@ -35,7 +35,15 @@ functions:
           path: /espcharts/players
           method: post
           cors: true
-
+          authorizer:
+            name: PrivateAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - UserPool
+                - Arn
+            claims:
+              - email
   getAllPlayers:
     handler: src/handlers/PlayerHandlers/GetAll.handler
     events:
@@ -43,7 +51,15 @@ functions:
           path: /espcharts/allPlayers
           method: get
           cors: true
-
+          authorizer:
+            name: PrivateAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - UserPool
+                - Arn
+            claims:
+              - email
   getPlayerById:
     handler: src/handlers/PlayerHandlers/GetById.handler
     events:
@@ -51,7 +67,15 @@ functions:
           path: /espcharts/players/{id}
           method: get
           cors: true
-
+          authorizer:
+            name: PrivateAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - UserPool
+                - Arn
+            claims:
+              - email
   getPlayerPages:
     handler: src/handlers/PlayerHandlers/GetPages.handler
     events:
@@ -67,7 +91,15 @@ functions:
           path: /espcharts/players/{id}
           method: put
           cors: true
-
+          authorizer:
+            name: PrivateAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - UserPool
+                - Arn
+            claims:
+              - email
   deletePlayer:
     handler: src/handlers/PlayerHandlers/Delete.handler
     events:
@@ -75,7 +107,15 @@ functions:
           path: /espcharts/players/{id}
           method: delete
           cors: true
-
+          authorizer:
+            name: PrivateAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - UserPool
+                - Arn
+            claims:
+              - email
   # Team Functions
   createTeam:
     handler: src/handlers/TeamHandlers/Post.handler
@@ -84,7 +124,15 @@ functions:
           path: /espcharts/teams
           method: post
           cors: true
-
+          authorizer:
+            name: PrivateAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - UserPool
+                - Arn
+            claims:
+              - email
   getAllTeams:
     handler: src/handlers/TeamHandlers/GetAll.handler
     events:
@@ -92,6 +140,15 @@ functions:
           path: /espcharts/allTeams
           method: get
           cors: true
+          authorizer:
+                name: PrivateAuthorizer # Apply the custom authorizer here
+                type: COGNITO_USER_POOLS
+                arn:
+                  Fn::GetAtt:
+                    - UserPool
+                    - Arn
+                claims:
+                  - email
 
   getTeamById:
     handler: src/handlers/TeamHandlers/GetById.handler
@@ -100,7 +157,15 @@ functions:
           path: /espcharts/teams/{id}
           method: get
           cors: true
-
+          authorizer:
+            name: PrivateAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - UserPool
+                - Arn
+            claims:
+              - email
   updateTeam:
     handler: src/handlers/TeamHandlers/Update.handler
     events:
@@ -108,7 +173,15 @@ functions:
           path: /espcharts/teams/{id}
           method: put
           cors: true
-
+          authorizer:
+            name: PrivateAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - UserPool
+                - Arn
+            claims:
+              - email
   getTeamPages:
     handler: src/handlers/TeamHandlers/GetPages.handler
     events:
@@ -116,7 +189,15 @@ functions:
           path: /espcharts/teams
           method: get
           cors: true
-
+          authorizer:
+            name: PrivateAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - UserPool
+                - Arn
+            claims:
+              - email
   deleteTeam:
     handler: src/handlers/TeamHandlers/Delete.handler
     events:
@@ -124,7 +205,15 @@ functions:
           path: /espcharts/teams/{id}
           method: delete
           cors: true
-
+          authorizer:
+            name: PrivateAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - UserPool
+                - Arn
+            claims:
+              - email
   # Tournament Functions
   createTournament:
     handler: src/handlers/TournamentHandler/Post.handler
@@ -133,7 +222,15 @@ functions:
           path: /espcharts/tournaments
           method: post
           cors: true
-
+          authorizer:
+            name: PrivateAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - UserPool
+                - Arn
+            claims:
+              - email
   getAllTournaments:
     handler: src/handlers/TournamentHandler/GetAll.handler
     events:
@@ -141,7 +238,15 @@ functions:
           path: /espcharts/allTournaments
           method: get
           cors: true
-
+          authorizer:
+            name: PrivateAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - UserPool
+                - Arn
+            claims:
+              - email
   getTournamentById:
     handler: src/handlers/TournamentHandler/GetById.handler
     events:
@@ -149,6 +254,15 @@ functions:
           path: /espcharts/tournaments/{id}
           method: get
           cors: true
+          authorizer:
+            name: PrivateAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - UserPool
+                - Arn
+            claims:
+              - email
 
   updateTournament:
     handler: src/handlers/TournamentHandler/Update.handler
@@ -157,6 +271,15 @@ functions:
           path: /espcharts/tournaments/{id}
           method: put
           cors: true
+          authorizer:
+            name: PrivateAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - UserPool
+                - Arn
+            claims:
+              - email
 
   getTournamentPages:
     handler: src/handlers/TournamentHandler/GetPages.handler
@@ -165,6 +288,15 @@ functions:
           path: /espcharts/tournaments
           method: get
           cors: true
+          authorizer:
+            name: PrivateAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - UserPool
+                - Arn
+            claims:
+              - email
 
   deleteTournament:
     handler: src/handlers/TournamentHandler/Delete.handler
